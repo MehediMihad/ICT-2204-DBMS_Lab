@@ -1,13 +1,189 @@
-mysql> show databases;
+mysql> SHOW DATABASES;
 +--------------------+
 | Database           |
 +--------------------+
 | information_schema |
+| m                  |
 | mysql              |
 | performance_schema |
-| rubel              |
+| sakila             |
+| student_db         |
 | sys                |
+| world              |
 +--------------------+
-5 rows in set (0.00 sec)
+8 rows in set (0.06 sec)
 
-mysql> notee;
+mysql> CREATE DATABASES IIT14THBATCH;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DATABASES IIT14THBATCH' at line 1
+mysql> CREATE DATABASE IIT14THBATCH;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| iit14thbatch       |
+| information_schema |
+| m                  |
+| mysql              |
+| performance_schema |
+| sakila             |
+| student_db         |
+| sys                |
+| world              |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> USE IIT14THBATCH;
+Database changed
+mysql> CREATE TABLE STUDENT (
+    -> STUDENT_ID INT,
+    -> STUDENT_NAME VARCHAR(30),
+    -> SESSION VARCHAR(10),
+    -> CGPA FLOAT(5,2),
+    -> GENDER VARCHAR(7),
+    -> MOBILE_PHONE VARCHAR(15),
+    -> EMAIL VARCHAR(100),
+    -> DOB DATE);
+Query OK, 0 rows affected, 1 warning (0.09 sec)
+
+mysql> SHOW TABLES;
++------------------------+
+| Tables_in_iit14thbatch |
++------------------------+
+| student                |
++------------------------+
+1 row in set (0.06 sec)
+
+mysql> DESC STUDENT;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| STUDENT_ID   | int          | YES  |     | NULL    |       |
+| STUDENT_NAME | varchar(30)  | YES  |     | NULL    |       |
+| SESSION      | varchar(10)  | YES  |     | NULL    |       |
+| CGPA         | float(5,2)   | YES  |     | NULL    |       |
+| GENDER       | varchar(7)   | YES  |     | NULL    |       |
+| MOBILE_PHONE | varchar(15)  | YES  |     | NULL    |       |
+| EMAIL        | varchar(100) | YES  |     | NULL    |       |
+| DOB          | date         | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+8 rows in set (0.06 sec)
+
+mysql> CREATE TABLE CUST(CUST_ID INT NOT NULL, CUST_NAME VARCHAR(10));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> SELECT * FROM CUST;
++---------+-----------+
+| CUST_ID | CUST_NAME |
++---------+-----------+
+|       1 | ASD       |
++---------+-----------+
+1 row in set (0.00 sec)
+
+mysql> DROP TABLE CUST;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> SELECT * FROM CUST;
+ERROR 1146 (42S02): Table 'iit14thbatch.cust' doesn't exist
+mysql> CREATE TABLE CUST(CUST_ID INT UNIQUE, CUST_NAME VARCHAR(10));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES CUST(1, 'ASD');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CUST(1, 'ASD')' at line 1
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+ERROR 1062 (23000): Duplicate entry '1' for key 'cust.CUST_ID'
+mysql> DROP TABLE CUST;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> CREATE TABLE CUST(CUST_ID INT UNIQUE, CUST_NAME VARCHAR(10), UNIQUE(CUST_ID));
+Query OK, 0 rows affected, 1 warning (0.11 sec)
+
+mysql> 
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+ERROR 1062 (23000): Duplicate entry '1' for key 'cust.CUST_ID'
+mysql> DROP TABLE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> DROP TABLE CUST;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> CREATE TABLE CUST(CUST_ID INT UNIQUE, CUST_NAME VARCHAR(10), CONSTRAINT uc_cust_id UNIQUE(CUST_ID));
+Query OK, 0 rows affected, 1 warning (0.10 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+ERROR 1062 (23000): Duplicate entry '1' for key 'cust.CUST_ID'
+mysql> DROP TABLE CUST;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql>  CREATE TABLE CUST(CUST_ID INT NOT NULL, CUST_NAME VARCHAR(10), NOT NULL(CUST_ID));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NOT NULL(CUST_ID))' at line 1
+mysql> DROP TABLE CUST;
+ERROR 1051 (42S02): Unknown table 'iit14thbatch.cust'
+mysql> CREATE TABLE CUST(CUST_ID INT PRIMARY KEY, CUST_NAME VARCHAR(10));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+ERROR 1062 (23000): Duplicate entry '1' for key 'cust.PRIMARY'
+mysql> DROP TABLE CUST;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> CREATE TABLE CUST(CUST_ID INT PRIMARY KEY, CUST_NAME VARCHAR(10), PRIMARY KEY(CUST_ID));
+ERROR 1068 (42000): Multiple primary key defined
+mysql> CREATE TABLE CUST(CUST_ID INT, CUST_NAME VARCHAR(10), PRIMARY KEY(CUST_ID));
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+ERROR 1062 (23000): Duplicate entry '1' for key 'cust.PRIMARY'
+mysql> CREATE TABLE CUST(CUST_ID INT, CUST_NAME VARCHAR(10), CONSTRAINT uc_cust_id PRIMARY KEY(CUST_ID));
+ERROR 1050 (42S01): Table 'cust' already exists
+mysql> DROP TABLE CUST;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE CUST(CUST_ID INT, CUST_NAME VARCHAR(10), CONSTRAINT uc_cust_id PRIMARY KEY(CUST_ID));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(1, 'ASD');
+ERROR 1062 (23000): Duplicate entry '1' for key 'cust.PRIMARY'
+mysql> SELECT * FROM STUDENT;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM CUST;
++---------+-----------+
+| CUST_ID | CUST_NAME |
++---------+-----------+
+|       1 | ASD       |
++---------+-----------+
+1 row in set (0.00 sec)
+
+mysql> DISC CUST;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DISC CUST' at line 1
+mysql> DESC CUST;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| CUST_ID   | int         | NO   | PRI | NULL    |       |
+| CUST_NAME | varchar(10) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+

@@ -1,0 +1,238 @@
+mysql> USE IIT14THBATCH;
+Database changed
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| iit14thbatch       |
+| information_schema |
+| mysql              |
+| performance_schema |
+| rubel              |
+| sys                |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM CUST;
++---------+-----------+
+| CUST_ID | CUST_NAME |
++---------+-----------+
+|       1 | ASD       |
++---------+-----------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(2,'DFGH');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUST(CUST_ID, CUST_NAME) VALUES(3,'ERTY');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CREATE TABLE TEST(TEST_ID INT, TEST_NAME VARCHAR(20), TEST_CODE VARCHAR(5), PRIMARY KEY (TEST_ID, TEST_CODE));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SELECT * FROM CUST;
++---------+-----------+
+| CUST_ID | CUST_NAME |
++---------+-----------+
+|       1 | ASD       |
+|       2 | DFGH      |
+|       3 | ERTY      |
++---------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM TEST;
+Empty set (0.00 sec)
+
+mysql> DESC TEST;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| TEST_ID   | int         | NO   | PRI | NULL    |       |
+| TEST_NAME | varchar(20) | YES  |     | NULL    |       |
+| TEST_CODE | varchar(5)  | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DESC CUST;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| CUST_ID   | int         | NO   | PRI | NULL    |       |
+| CUST_NAME | varchar(10) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE USER_TYPE(USER_TYPE_ID INT PRIMARY KEY, USER_TYPE VARCHAR(20)); 
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DROP TABLE USER_TYPE;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE USER_TYPE(USER_TYPE_ID INT PRIMARY KEY, USER_TYPE_NAME VARCHAR(20));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO USER_TYPE(USER_TYPE_ID, USER_TYPE_NAME) VALUES(1, 'ABC');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO USER_TYPE(USER_TYPE_ID, USER_TYPE_NAME) VALUES(2, 'DEF');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO USER_TYPE(USER_TYPE_ID, USER_TYPE_NAME) VALUES(3, 'GHI');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO USER_TYPE(USER_TYPE_ID, USER_TYPE_NAME) VALUES(4, 'JKL');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CREATE TABLE USER(USER_ID INT PRIMARY KEY, USER_NAME VARCHAR(20), DOB DATE, USER_TYPE_ID INT ,FOREIGN KEY(USER_TYPE_ID) REFERENCES USER_TYPE(USER_TYPE_ID)); 
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO USER(USER_ID, USER_NAME, DOB, USER_TYPE_ID) VALUES(101, 'QWE', '2020-01-01', 1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO USER(USER_ID, USER_NAME, DOB, USER_TYPE_ID) VALUES(102, 'RTY', '2000-01-01', 5);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`iit14thbatch`.`user`, CONSTRAINT `user_ibfk_1` FOREIGN KEY (`USER_TYPE_ID`) REFERENCES `user_type` (`USER_TYPE_ID`))
+mysql> CREATE TABLE USER(USER_ID INT PRIMARY KEY, USER_NAME VARCHAR(20), DOB DATE, USER_TYPE_ID INT , CONSTRAINT fk_user_type_id FOREIGN KEY(USER_TYPE_ID) REFERENCES USER_TYPE(USER_TYPE_ID));
+ERROR 1050 (42S01): Table 'user' already exists
+mysql> CREATE TABLE USER_2(USER_ID INT PRIMARY KEY, USER_NAME VARCHAR(20), DOB DATE, USER_TYPE_ID INT , CONSTRAINT fk_user_type_id FOREIGN KEY(USER_TYPE_ID) REFERENCES USER_TYPE(USER_TYPE_ID));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>  CREATE TABLE HALL(HALL_ID INT PRIMARY KEY, HALL_NAME VARCHAR(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO HALL(HALL_ID, HALL_NAME) VALUES(1, 'MMH');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO HALL(HALL_ID, HALL_NAME) VALUES(2, 'BBH');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO HALL(HALL_ID, HALL_NAME) VALUES(1, 'RTH');
+ERROR 1062 (23000): Duplicate entry '1' for key 'hall.PRIMARY'
+mysql> INSERT INTO HALL(HALL_ID, HALL_NAME) VALUES(3, 'RTH');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CREATE TABLE STUDENT_INFO(STUDENT_INFO_ID INT PRIMARY KEY, STUDENT_INFO_NAME VARCHAR(20), SESSION VARCHAR(10), HALL_ID, FOREIGN KEY(HALL_ID) REFERENCES HALL(HALL_ID));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', FOREIGN KEY(HALL_ID) REFERENCES HALL(HALL_ID))' at line 1
+mysql> CREATE TABLE STUDENT_INFO(STUDENT_INFO_ID INT PRIMARY KEY, STUDENT_INFO_NAME VARCHAR(20), SESSION VARCHAR(10), HALL_ID INT, FOREIGN KEY(HALL_ID) REFERENCES HALL(HALL_ID));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO STUDENT_INFO(STUDENT_INFO_ID, STUDENT_INFO_NAME, SESSION, HALL_ID) VALUES (1963, 'MEHEDI', '2022-2023', 1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM HALL;
++---------+-----------+
+| HALL_ID | HALL_NAME |
++---------+-----------+
+|       1 | MMH       |
+|       2 | BBH       |
+|       3 | RTH       |
++---------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT *FROM STUDENT_INFO;
++-----------------+-------------------+-----------+---------+
+| STUDENT_INFO_ID | STUDENT_INFO_NAME | SESSION   | HALL_ID |
++-----------------+-------------------+-----------+---------+
+|            1963 | MEHEDI            | 2022-2023 |       1 |
++-----------------+-------------------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql>  INSERT INTO STUDENT_INFO(STUDENT_INFO_ID, STUDENT_INFO_NAME, SESSION, HALL_ID) VALUES (1964, 'NAHID', '2022-2023', 6);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`iit14thbatch`.`student_info`, CONSTRAINT `student_info_ibfk_1` FOREIGN KEY (`HALL_ID`) REFERENCES `hall` (`HALL_ID`))
+mysql> CREATE TABLE STUDENT_INFO_2(STUDENT_INFO_ID INT PRIMARY KEY, STUDENT_INFO_NAME VARCHAR(20), SESSION VARCHAR(10), HALL_ID, CONSTRAINT fk_hall_id FOREIGN KEY(HALL_ID) REFERENCES HALL(HALL_ID));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', CONSTRAINT fk_hall_id FOREIGN KEY(HALL_ID) REFERENCES HALL(HALL_ID))' at line 1
+mysql> CREATE TABLE STUDENT_INFO_2(STUDENT_INFO_ID INT PRIMARY KEY, STUDENT_INFO_NAME VARCHAR(20), SESSION VARCHAR(10), HALL_ID INT, CONSTRAINT fk_hall_id FOREIGN KEY(HALL_ID) REFERENCES HALL(HALL_ID));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO STUDENT_INFO_2(STUDENT_INFO_ID, STUDENT_INFO_NAME, SESSION, HALL_ID) VALUES (1963, 'MEHEDI', '2022-2023', 1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CREATE TABLE TEST1(TEST_ID INT, TEST_NAME VARCHAR(20), AGE SMALLINT, CHECK(AGE>=18));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO TEST1(TEST_ID, TEST_NAME, AGE) VALUES(1, 'ABC', 26);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO TEST1(TEST_ID, TEST_NAME, AGE) VALUES(2, 'ABC', 17);
+ERROR 3819 (HY000): Check constraint 'test1_chk_1' is violated.
+mysql> DROP TEST1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TEST1' at line 1
+mysql> DROP TABLE TEST1;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE TEST1(TEST_ID INT, TEST_NAME VARCHAR(20) DEFAULT 'HSD', AGE SMALLINT, CHECK(AGE>=18), TEST_DATE DATETIME DEFAULT CURRENT_TIMESTAMP );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO TEST1(TEST_ID, TEST_NAME, AGE) VALUES(1, 26);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> SELECT * FROM TEST1;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO TEST1(TEST_ID, AGE) VALUES(1, 26);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM TEST1;
++---------+-----------+------+---------------------+
+| TEST_ID | TEST_NAME | AGE  | TEST_DATE           |
++---------+-----------+------+---------------------+
+|       1 | HSD       |   26 | 2025-10-12 12:14:47 |
++---------+-----------+------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE ORDER(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20), ORDER_TIME DATETIME DEFAULT CURRENT_TIMESTAMP, ORDER_COUNT INT, CHECK(ORDER_COUNT>=3);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20), ORDER_TIME DATETIME DEFAULT CU' at line 1
+mysql> CREATE TABLE ORDER(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20), ORDER_TIME DATETIME DEFAULT CURRENT_TIMESTAMP, ORDER_COUNT INT, CHECK(ORDER_COUNT>=3));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20), ORDER_TIME DATETIME DEFAULT CU' at line 1
+mysql> CREATE TABLE ORDER(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(ORDER_COUNT>=3), ORDER_TIME DATETIME DEFAULT CURRENT_TIMESTAMP );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(ORDER_' at line 1
+mysql> CREATE TABLE ORDER(ORDER_ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(ORDER_COUNT>=3), ORDER_TIME DATETIME DEFAULT CURRENT_TIMESTAMP );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER(ORDER_ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(' at line 1
+mysql> CREATE TABLE ORDER(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(ORDER_COUNT>=3), ORDER_TIME DATETIME DEFAULT CURRENT_TIMESTAMP );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(ORDER_' at line 1
+mysql> CREATE TABLE ORDER(ID INT, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(ORDER_COUNT>=3), ORDER_TIME DATETIME DEFAULT CURRENT_TIMESTAMP );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER(ID INT, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(ORDER_COUNT>=3), O' at line 1
+mysql> CREATE TABLE ORDERS(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(ORDER_COUNT>=3), ORDER_TIME DATETIME DEFAULT CURRENT_TIMESTAMP);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DROP TABLE ORDERS;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE ORDER(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(ORDER_COUNT>=3), ORDER_TIME DATETIME DEFAULT CURRENT_TIMESTAMP);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(ORDER_' at line 1
+mysql> CREATE TABLE ORDERS(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(ORDER_COUNT>=3), ORDER_TIME DATETIME DEFAULT CURRENT_TIMESTAMP);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT * INTO ORDERS(1,5);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* INTO ORDERS(1,5)' at line 1
+mysql> INSERT * INTO ORDERS(1,'JKL',5);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* INTO ORDERS(1,'JKL',5)' at line 1
+mysql>  INSERT INTO ORDERS(1,'JKL',5);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1,'JKL',5)' at line 1
+mysql> INSERT INTO ORDERS(ID, ORDER_NAME, ORDER_COUNT) VALUES(1,'HJK,5);
+    '> 
+    '> .
+    '> );
+    '> '2);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '2)' at line 5
+mysql> INSERT INTO ORDERS(ID, ORDER_NAME, ORDER_COUNT) VALUES(1,'HJK',5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> DROP TABLE ORDERS;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>  CREATE TABLE ORDERS(ID INT PRIMARY KEY, ORDER_NAME VARCHAR(20),  ORDER_COUNT INT, CHECK(ORDER_COUNT>=3), ORDER_TIME DATETIME DEFAULT CURRENT_TIMESTAMP);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO ORDERS(ID, ORDER_NAME, ORDER_COUNT) VALUES(1,'HJK',5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM ORDERS;
++----+------------+-------------+---------------------+
+| ID | ORDER_NAME | ORDER_COUNT | ORDER_TIME          |
++----+------------+-------------+---------------------+
+|  1 | HJK        |           5 | 2025-10-12 12:37:15 |
++----+------------+-------------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO ORDERS(ID, ORDER_NAME, ORDER_COUNT) VALUES(1,'HJK',2);
+ERROR 3819 (HY000): Check constraint 'orders_chk_1' is violated.
+mysql> NOTEE;
